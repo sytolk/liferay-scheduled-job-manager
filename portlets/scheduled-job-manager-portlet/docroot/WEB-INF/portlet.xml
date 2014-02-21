@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+
+<portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd" version="2.0">
+	
+	<portlet>
+		<portlet-name>scheduled-job-manager</portlet-name>
+		<display-name>Scheduled Job Manager</display-name>
+		<portlet-class>
+			com.rivetlogic.quartz.portlet.QuartzSchedulerPortlet
+		</portlet-class>
+		<init-param>
+			<name>view-template</name>
+			<value>/jsp/view.jsp</value>
+		</init-param>
+		<expiration-cache>0</expiration-cache>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>view</portlet-mode>
+		</supports>
+		<resource-bundle>content/language</resource-bundle>
+		<portlet-info>
+			<title>Scheduled Job Manager</title>
+			<short-title>Scheduled Job Manager</short-title>
+			<keywords></keywords>
+		</portlet-info>
+		<security-role-ref>
+			<role-name>administrator</role-name>
+		</security-role-ref>
+	</portlet>
+</portlet-app>
