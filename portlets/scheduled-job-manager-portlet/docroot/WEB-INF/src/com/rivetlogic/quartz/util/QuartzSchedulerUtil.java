@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.util.portlet.PortletProps;
 import com.rivetlogic.quartz.bean.SchedulerJobBean;
 import com.rivetlogic.quartz.bean.impl.SchedulerJobBeanImpl;
 import com.rivetlogic.quartz.sort.EndTimeComparator;
@@ -171,7 +172,8 @@ public class QuartzSchedulerUtil {
     
     public static final String ATTRIBUTE_JOBS_LIST = "schedulerJobsList";
     public static final String ATTRIBUTE_COUNT = "count";
-    public static final SimpleDateFormat FORMAT_DATE_TIME = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+    public static final String PROP_DEFAULT_FORMAT_DATE = "default.format.date"; 
+    public static final SimpleDateFormat FORMAT_DATE_TIME = new SimpleDateFormat(PortletProps.get(PROP_DEFAULT_FORMAT_DATE));
     
     private static final Log _log = LogFactoryUtil.getLog(QuartzSchedulerUtil.class);
     private static final String LOG_ACTION_MSG = "action will be processed on job ";

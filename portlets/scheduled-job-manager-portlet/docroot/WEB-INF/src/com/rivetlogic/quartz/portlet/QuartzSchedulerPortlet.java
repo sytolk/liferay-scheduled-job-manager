@@ -51,7 +51,7 @@ public class QuartzSchedulerPortlet extends MVCPortlet {
             QuartzSchedulerUtil.getSchedulerJobs(request);
         } catch (SchedulerException e) {
             request.setAttribute(QuartzSchedulerUtil.ATTRIBUTE_JOBS_LIST, new ArrayList<SchedulerJobBean>());
-            request.setAttribute(QuartzSchedulerUtil.ATTRIBUTE_COUNT, 0);
+            request.setAttribute(QuartzSchedulerUtil.ATTRIBUTE_COUNT, NOT_RESULTS);
             _log.error(e);
         }
         super.doView(request, response);
@@ -94,6 +94,7 @@ public class QuartzSchedulerPortlet extends MVCPortlet {
         }
     }
     
+    private static final int NOT_RESULTS = 0;
     private static final Log _log = LogFactoryUtil.getLog(QuartzSchedulerPortlet.class);
     private static final String SESSION_MESSAGE_SUCCESS = "rivet_scheduled_success";
     private static final String SESSION_MESSAGE_ERROR = "rivet_scheduled_error";
