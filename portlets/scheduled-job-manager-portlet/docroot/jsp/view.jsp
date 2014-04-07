@@ -19,12 +19,6 @@
   */
 --%>
 
-<%@page import="java.util.List"%>
-<%@page import="java.util.Collections"%>
-<%@page import="com.liferay.portal.kernel.util.OrderByComparator"%>
-<%@page import="com.rivetlogic.quartz.bean.SchedulerJobBean"%>
-<%@page import="com.rivetlogic.quartz.util.QuartzSchedulerUtil"%>
-
 <%@include file="init.jsp" %>
 
 <liferay-ui:success key="rivet_scheduled_success" message="rivet.scheduled.success"/>
