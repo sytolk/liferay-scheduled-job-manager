@@ -17,65 +17,30 @@
 
 package com.rivetlogic.quartz.sort;
 
-import java.text.ParseException;
 import java.util.Date;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.OrderByComparator;
 import com.rivetlogic.quartz.bean.SchedulerJobBean;
-import com.rivetlogic.quartz.util.QuartzSchedulerUtil;
 
 /**
  * @author steven.barba
- * 
+ * @author Tobias Liefke
  */
-public class PreviousFireTimeComparator extends OrderByComparator {
-    
-    private static final long serialVersionUID = -4403619283278634299L;
-    private static final Log log = LogFactoryUtil.getLog(PreviousFireTimeComparator.class);
-    
-    private boolean asc;
-    
-    public PreviousFireTimeComparator() {
-        this(false);
-    }
-    
-    public PreviousFireTimeComparator(boolean asc) {
-        this.asc = asc;
-    }
-    
-    @Override
-    public int compare(Object arg0, Object arg1) {
-        
-        boolean value = false;
-        SchedulerJobBean jobBean0 = (SchedulerJobBean) arg0;
-        SchedulerJobBean jobBean1 = (SchedulerJobBean) arg1;
-        
-        Date previousFireTime0 = null;
-        Date previousFireTime1 = null;
-        String previousFire0 = jobBean0.getPreviousFireTime();
-        String previousFire1 = jobBean1.getPreviousFireTime();
-        if (!previousFire0.trim().equals(SchedulerJobBean.NULL_VALUE_DISPLAY) && !previousFire1.trim().equals(SchedulerJobBean.NULL_VALUE_DISPLAY)) {
-            try {
-                previousFireTime0 = QuartzSchedulerUtil.FORMAT_DATE_TIME.parse(previousFire0);
-                previousFireTime1 = QuartzSchedulerUtil.FORMAT_DATE_TIME.parse(previousFire1);
-            } catch (ParseException e) {
-                log.warn(e);
-            }
-            value = previousFireTime0.after(previousFireTime1);
-        } else {
-            if (!previousFire0.trim().equals(SchedulerJobBean.NULL_VALUE_DISPLAY)) {
-                value = true;
-            }
-        }
-        
-        if (asc) {
-            return value ? 1 : -1;
-        } else {
-            return value ? -1 : 1;
-        }
-        
-    }
-    
+public class PreviousFireTimeComparator extends DateComparator {
+
+	private static final long serialVersionUID = 1L;
+
+	public PreviousFireTimeComparator() {
+		super();
+	}
+
+	public PreviousFireTimeComparator(boolean asc) {
+		super(asc);
+	}
+
+	@Override
+	protected Date getDateValue(SchedulerJobBean jobBean) {
+		return jobBean.getPreviousFireTime();
+	}
+
 }
+

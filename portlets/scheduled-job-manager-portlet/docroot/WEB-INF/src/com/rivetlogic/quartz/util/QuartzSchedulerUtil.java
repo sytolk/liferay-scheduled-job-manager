@@ -24,10 +24,11 @@ import com.liferay.portal.kernel.scheduler.SchedulerException;
 import com.liferay.portal.kernel.scheduler.StorageType;
 import com.liferay.portal.kernel.scheduler.TriggerState;
 import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
+import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.util.portlet.PortletProps;
+import com.liferay.portal.model.User;
 import com.rivetlogic.quartz.bean.SchedulerJobBean;
 import com.rivetlogic.quartz.bean.impl.SchedulerJobBeanImpl;
 import com.rivetlogic.quartz.sort.EndTimeComparator;
@@ -39,11 +40,13 @@ import com.rivetlogic.quartz.sort.StartTimeComparator;
 import com.rivetlogic.quartz.sort.StateComparator;
 import com.rivetlogic.quartz.sort.StorageTypeComparator;
 
+import java.text.Format;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import javax.portlet.PortletRequest;
 
@@ -66,14 +69,10 @@ public class QuartzSchedulerUtil {
         schedulerJobBean.setGroupName(schedulerResponse.getGroupName());
         schedulerJobBean.setTriggerState(triggerState == null ? SchedulerJobBean.NULL_VALUE_DISPLAY : triggerState
                 .toString());
-        schedulerJobBean.setStartTime(startTime == null ? SchedulerJobBean.NULL_VALUE_DISPLAY : FORMAT_DATE_TIME
-                .format(startTime));
-        schedulerJobBean.setEndTime(endTime == null ? SchedulerJobBean.NULL_VALUE_DISPLAY : FORMAT_DATE_TIME
-                .format(endTime));
-        schedulerJobBean.setPreviousFireTime(previousFireTime == null ? SchedulerJobBean.NULL_VALUE_DISPLAY
-                : FORMAT_DATE_TIME.format(previousFireTime));
-        schedulerJobBean.setNextFireTime(nextFireTime == null ? SchedulerJobBean.NULL_VALUE_DISPLAY : FORMAT_DATE_TIME
-                .format(nextFireTime));
+        schedulerJobBean.setStartTime(startTime);
+        schedulerJobBean.setEndTime(endTime);
+        schedulerJobBean.setPreviousFireTime(previousFireTime);
+        schedulerJobBean.setNextFireTime(nextFireTime);
         schedulerJobBean.setStorageType(storageType == null ? SchedulerJobBean.NULL_VALUE_DISPLAY : storageType
                 .toString().trim());
         return schedulerJobBean;
@@ -170,10 +169,13 @@ public class QuartzSchedulerUtil {
         return orderByComparator;
     }
     
+    public static Format getDateTimeFormat(User user) {
+    	return FastDateFormatFactoryUtil.getDateTime(user == null ? Locale.getDefault() : user.getLocale(), 
+        		user == null ? TimeZone.getDefault() : user.getTimeZone());    	
+    }
+    
     public static final String ATTRIBUTE_JOBS_LIST = "schedulerJobsList";
     public static final String ATTRIBUTE_COUNT = "count";
-    public static final String PROP_DEFAULT_FORMAT_DATE = "default.format.date"; 
-    public static final SimpleDateFormat FORMAT_DATE_TIME = new SimpleDateFormat(PortletProps.get(PROP_DEFAULT_FORMAT_DATE));
     
     private static final Log _log = LogFactoryUtil.getLog(QuartzSchedulerUtil.class);
     private static final String LOG_ACTION_MSG = "action will be processed on job ";

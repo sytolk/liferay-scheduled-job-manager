@@ -25,7 +25,7 @@
 <liferay-ui:error key="rivet_scheduled_error" message="rivet.scheduled.error" />
 
 <%
-    List<SchedulerJobBean> schedulerJobBeans = (List<SchedulerJobBean>)  request.getAttribute("schedulerJobsList");
+    List<SchedulerJobBean> schedulerJobBeans = (List<SchedulerJobBean>) request.getAttribute("schedulerJobsList");
 	
 	/* Sorting */
 	String orderByCol = ParamUtil.getString(request, "orderByCol");
@@ -43,6 +43,8 @@
 		OrderByComparator orderByComparator = QuartzSchedulerUtil.getSchedulerJobComparator(orderByCol, orderByType);
 		Collections.sort(schedulerJobBeans, orderByComparator);
 	}
+
+	Format dateFormatDateTime = FastDateFormatFactoryUtil.getDateTime(locale, timeZone);
 %>
 
 <c:set var="jobactionparam" value ="<%= QuartzSchedulerUtil.PARAMETER_JOB_ACTION %>"/>
@@ -100,16 +102,16 @@
 			                ${schedulerJobBean.triggerState}
 			        </liferay-ui:search-container-column-text>
 			        <liferay-ui:search-container-column-text name="start-time"  orderable="true" orderableProperty="startTime">
-			                ${schedulerJobBean.startTime}
+			                <%= schedulerJobBean.getStartTime() == null ? '-' : dateFormatDateTime.format(schedulerJobBean.getStartTime()) %>
 			        </liferay-ui:search-container-column-text>
 			        <liferay-ui:search-container-column-text name="end-time"  orderable="true" orderableProperty="endTime" cssClass="hidden-phone hidden-tablet" >
-			                ${schedulerJobBean.endTime}
+			                <%= schedulerJobBean.getEndTime() == null ? '-' : dateFormatDateTime.format(schedulerJobBean.getEndTime()) %>
 			        </liferay-ui:search-container-column-text>
 			        <liferay-ui:search-container-column-text name="previous-fire-time"  orderable="true" orderableProperty="previousFireTime" cssClass="hidden-phone hidden-tablet">
-			                ${schedulerJobBean.previousFireTime}
+			                <%= schedulerJobBean.getPreviousFireTime() == null ? '-' : dateFormatDateTime.format(schedulerJobBean.getPreviousFireTime()) %>
 			        </liferay-ui:search-container-column-text>
 			        <liferay-ui:search-container-column-text name="next-fire-time"  orderable="true" orderableProperty="nextFireTime">
-			                ${schedulerJobBean.nextFireTime}
+			                <%= schedulerJobBean.getNextFireTime() == null ? '-' : dateFormatDateTime.format(schedulerJobBean.getNextFireTime()) %>
 			        </liferay-ui:search-container-column-text>
 			        <liferay-ui:search-container-column-text name="storage-type"  orderable="true" orderableProperty="storageType" cssClass="hidden-phone hidden-tablet">
 			                ${schedulerJobBean.storageType}
