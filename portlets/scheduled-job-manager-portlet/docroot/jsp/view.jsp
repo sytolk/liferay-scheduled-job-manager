@@ -77,8 +77,8 @@
 				</div>
 			</fieldset>
 
-			<liferay-ui:search-container id="schedulerJobListContainer" delta="<%= QuartzSchedulerUtil.NUMBER_OF_ROWS %>"
-				emptyResultsMessage="scheduled.job.manager.empty" orderByCol="<%= orderByCol %>" orderByType="<%= orderByType %>">
+			<liferay-ui:search-container id="schedulerJobListContainer"	emptyResultsMessage="scheduled.job.manager.empty" 
+				orderByCol="<%= orderByCol %>" orderByType="<%= orderByType %>">
 				
 				<liferay-ui:search-container-results results="<%= QuartzSchedulerUtil.subList(schedulerJobBeans, searchContainer.getStart(), searchContainer.getEnd()) %>"
 					total="${count}" />

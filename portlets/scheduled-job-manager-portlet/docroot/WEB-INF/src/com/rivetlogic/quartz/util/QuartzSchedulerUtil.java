@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.scheduler.StorageType;
 import com.liferay.portal.kernel.scheduler.TriggerState;
 import com.liferay.portal.kernel.scheduler.messaging.ReceiverKey;
 import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -97,9 +98,9 @@ public class QuartzSchedulerUtil {
     public static void scheduleJobAction(PortletRequest request, String action) throws SchedulerException,
         ParseException {
         // Checking all the rows to see which are selected
-        for (int i = 0; i <= QuartzSchedulerUtil.NUMBER_OF_ROWS; i++) {
-            
-            boolean rowSelected = ParamUtil.getBoolean(request, PARAMETER_JOB_SELECTED + i, false);
+    	String rowSelection;
+        for (int i = 0; (rowSelection = request.getParameter(PARAMETER_JOB_SELECTED + i)) != null; i++) {
+            boolean rowSelected = GetterUtil.get(rowSelection, false);
             if (rowSelected) {
                 
                 String jobName = ParamUtil.getString(request, PARAMETER_JOB_NAME + i);
@@ -203,6 +204,5 @@ public class QuartzSchedulerUtil {
 
     public static final String DEFAULT_ORDER_BY_TYPE = "asc";
     public static final String DEFAULT_ORDER_BY_COL = COLUMN_SHORT_NAME;
-    public static final int NUMBER_OF_ROWS = 10;
     
 }
