@@ -96,6 +96,6 @@ public class QuartzSchedulerPortlet extends MVCPortlet {
     
     private static final int NOT_RESULTS = 0;
     private static final Log _log = LogFactoryUtil.getLog(QuartzSchedulerPortlet.class);
-    private static final String SESSION_MESSAGE_SUCCESS = "rivet_scheduled_success";
-    private static final String SESSION_MESSAGE_ERROR = "rivet_scheduled_error";
+    private static final String SESSION_MESSAGE_SUCCESS = "your-request-completed-successfully";
+    private static final String SESSION_MESSAGE_ERROR = "your-request-failed-to-complete";
 }

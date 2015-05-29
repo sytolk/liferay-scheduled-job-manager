@@ -39,10 +39,8 @@
 	    orderByType = QuartzSchedulerUtil.DEFAULT_ORDER_BY_TYPE;
 	}
 
-	if (orderByCol != null || orderByType != null) {
-		OrderByComparator orderByComparator = QuartzSchedulerUtil.getSchedulerJobComparator(orderByCol, orderByType);
-		Collections.sort(schedulerJobBeans, orderByComparator);
-	}
+	OrderByComparator orderByComparator = QuartzSchedulerUtil.getSchedulerJobComparator(orderByCol, orderByType);
+	Collections.sort(schedulerJobBeans, orderByComparator);
 
 	Format dateFormatDateTime = FastDateFormatFactoryUtil.getDateTime(locale, timeZone);
 %>
@@ -63,16 +61,19 @@
 			
 			<fieldset>
 				<legend><liferay-ui:message key="scheduled.job.manager.title" /></legend>
-				<div class="btn-toolbar well clearfix">
+				<div class="btn-toolbar form-actions">
 					<div class="btn-group scheduler-job-actions pull-left">
-						<button id="<%= QuartzSchedulerUtil.ACTION_RESUME %>" class="btn btn-large  btn-primary icon-play" type="button" value="Resume">&nbsp;Resume</button>
-						<button id="<%= QuartzSchedulerUtil.ACTION_PAUSE %>" class="btn btn-large  btn-warning icon-pause" type="button" value="Pause">&nbsp;Pause</button>
+						<button id="<%= QuartzSchedulerUtil.ACTION_RUN %>" class="btn btn-large btn-success" type="button" value="Run"><span class="icon-play"></span> <liferay-ui:message key="execute" /></button>
+                        &nbsp;
+						<button id="<%= QuartzSchedulerUtil.ACTION_RESUME %>" class="btn btn-large btn-primary" type="button" value="Resume"><span class="icon-eject"></span> <liferay-ui:message key="resume" /></button>
+                        &nbsp;
+						<button id="<%= QuartzSchedulerUtil.ACTION_PAUSE %>" class="btn btn-large btn-warning" type="button" value="Pause"><span class="icon-pause"></span> <liferay-ui:message key="pause" /></button>
 					</div>
 					<div class="btn-group refresh pull-right">
-						<button id="<%= QuartzSchedulerUtil.ACTION_SHUTDOWN %>" class="btn btn-large  btn-danger icon-off" type="button" value="Shutdown">&nbsp;Shutdown</button>
-						<button id="<%= QuartzSchedulerUtil.ACTION_REFRESH %>" class="btn btn-large  btn-success icon-refresh" type="button" value="Refresh">&nbsp;Refresh</button>
+						<button id="<%= QuartzSchedulerUtil.ACTION_SHUTDOWN %>" class="btn btn-large btn-danger" type="button" value="Shutdown"><span class="icon-off"></span> <liferay-ui:message key="shutdown" /></button>
+                        &nbsp;
+						<button id="<%= QuartzSchedulerUtil.ACTION_REFRESH %>" class="btn btn-large btn-success" type="button" value="Refresh"><span class="icon-refresh"></span> <liferay-ui:message key="refresh" /></button>
 					</div>
-					<div class="btn-group refresh pull-right clearfix"></div>
 				</div>
 			</fieldset>
 
@@ -94,26 +95,26 @@
 			                ${schedulerJobBean.shortName}
 			                <aui:input name="${jobnameparam}${index}" type="hidden" value="${schedulerJobBean.jobName}"/>
 			        </liferay-ui:search-container-column-text>
-			        <liferay-ui:search-container-column-text name="group-name"  orderable="true" orderableProperty="shortGroup" cssClass="hidden-phone hidden-tablet" >
+			        <liferay-ui:search-container-column-text name="group-name" orderable="true" orderableProperty="shortGroup" cssClass="hidden-phone hidden-tablet" >
 			                ${schedulerJobBean.shortGroup}
 			                <aui:input name="${jobgroupparam}${index}" type="hidden" value="${schedulerJobBean.groupName}"/>
 			        </liferay-ui:search-container-column-text>
-			        <liferay-ui:search-container-column-text name="state"  orderable="true" orderableProperty="state">
+			        <liferay-ui:search-container-column-text name="status" orderable="true" orderableProperty="state">
 			                ${schedulerJobBean.triggerState}
 			        </liferay-ui:search-container-column-text>
-			        <liferay-ui:search-container-column-text name="start-time"  orderable="true" orderableProperty="startTime">
+			        <liferay-ui:search-container-column-text name="start-time" orderable="true" orderableProperty="startTime">
 			                <%= schedulerJobBean.getStartTime() == null ? '-' : dateFormatDateTime.format(schedulerJobBean.getStartTime()) %>
 			        </liferay-ui:search-container-column-text>
-			        <liferay-ui:search-container-column-text name="end-time"  orderable="true" orderableProperty="endTime" cssClass="hidden-phone hidden-tablet" >
+			        <liferay-ui:search-container-column-text name="termination-time" orderable="true" orderableProperty="endTime" cssClass="hidden-phone hidden-tablet" >
 			                <%= schedulerJobBean.getEndTime() == null ? '-' : dateFormatDateTime.format(schedulerJobBean.getEndTime()) %>
 			        </liferay-ui:search-container-column-text>
-			        <liferay-ui:search-container-column-text name="previous-fire-time"  orderable="true" orderableProperty="previousFireTime" cssClass="hidden-phone hidden-tablet">
+			        <liferay-ui:search-container-column-text name="previous-fire-time" orderable="true" orderableProperty="previousFireTime" cssClass="hidden-phone hidden-tablet">
 			                <%= schedulerJobBean.getPreviousFireTime() == null ? '-' : dateFormatDateTime.format(schedulerJobBean.getPreviousFireTime()) %>
 			        </liferay-ui:search-container-column-text>
-			        <liferay-ui:search-container-column-text name="next-fire-time"  orderable="true" orderableProperty="nextFireTime">
+			        <liferay-ui:search-container-column-text name="next-fire-time" orderable="true" orderableProperty="nextFireTime">
 			                <%= schedulerJobBean.getNextFireTime() == null ? '-' : dateFormatDateTime.format(schedulerJobBean.getNextFireTime()) %>
 			        </liferay-ui:search-container-column-text>
-			        <liferay-ui:search-container-column-text name="storage-type"  orderable="true" orderableProperty="storageType" cssClass="hidden-phone hidden-tablet">
+			        <liferay-ui:search-container-column-text name="storage-type" orderable="true" orderableProperty="storageType" cssClass="hidden-phone hidden-tablet">
 			                ${schedulerJobBean.storageType}
 			                <aui:input name="${jobstoragetypeparam}${index}" type="hidden" value="${schedulerJobBean.storageType}"/>
 			        </liferay-ui:search-container-column-text>

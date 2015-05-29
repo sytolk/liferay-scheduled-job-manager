@@ -19,6 +19,7 @@ package com.rivetlogic.quartz.bean.impl;
 
 import java.util.Date;
 
+import com.liferay.portal.kernel.util.StringUtil;
 import com.rivetlogic.quartz.bean.SchedulerJobBean;
 
 /**
@@ -159,16 +160,16 @@ public class SchedulerJobBeanImpl implements SchedulerJobBean {
     }
     
     public String getShortName() {
-        if (jobName != null && !jobName.isEmpty()) {
-            return jobName.substring(jobName.lastIndexOf(".")).substring(1);
+        if (jobName != null) {
+            return jobName.substring(jobName.lastIndexOf('.') + 1);
         } else {
             return null;
         }
     }
     
     public String getShortGroup() {
-        if (groupName != null && !groupName.isEmpty()) {
-            return groupName.substring(groupName.lastIndexOf(".")).substring(1);
+        if (groupName != null) {
+            return groupName.substring(groupName.lastIndexOf(".") + 1);
         } else {
             return null;
         }

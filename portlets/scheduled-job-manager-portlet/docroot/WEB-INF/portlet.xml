@@ -17,7 +17,9 @@
 			<mime-type>text/html</mime-type>
 			<portlet-mode>view</portlet-mode>
 		</supports>
-		<resource-bundle>content/language</resource-bundle>
+		<supported-locale>en</supported-locale>
+        <supported-locale>de</supported-locale>
+		<resource-bundle>content.language</resource-bundle>
 		<portlet-info>
 			<title>Scheduled Job Manager</title>
 			<short-title>Scheduled Job Manager</short-title>
