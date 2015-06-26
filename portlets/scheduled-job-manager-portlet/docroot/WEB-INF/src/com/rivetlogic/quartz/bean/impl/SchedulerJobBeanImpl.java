@@ -17,11 +17,14 @@
 
 package com.rivetlogic.quartz.bean.impl;
 
+import java.util.Date;
+
+import com.liferay.portal.kernel.util.StringUtil;
 import com.rivetlogic.quartz.bean.SchedulerJobBean;
 
 /**
  * @author steven.barba
- * 
+ * @author Tobias Liefke
  */
 public class SchedulerJobBeanImpl implements SchedulerJobBean {
 
@@ -30,10 +33,10 @@ public class SchedulerJobBeanImpl implements SchedulerJobBean {
     protected String jobName;
     protected String groupName;
     protected String triggerState;
-    protected String startTime;
-    protected String endTime;
-    protected String previousFireTime;
-    protected String nextFireTime;
+    protected Date startTime;
+    protected Date endTime;
+    protected Date previousFireTime;
+    protected Date nextFireTime;
     protected String storageType;
     
     /**
@@ -84,7 +87,7 @@ public class SchedulerJobBeanImpl implements SchedulerJobBean {
     /**
      * @return the startTime
      */
-    public String getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
     
@@ -92,14 +95,14 @@ public class SchedulerJobBeanImpl implements SchedulerJobBean {
      * @param startTime
      *            the startTime to set
      */
-    public void setStartTime(String startTime) {
+    public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
     
     /**
      * @return the endTime
      */
-    public String getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
     
@@ -107,14 +110,14 @@ public class SchedulerJobBeanImpl implements SchedulerJobBean {
      * @param endTime
      *            the endTime to set
      */
-    public void setEndTime(String endTime) {
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
     
     /**
      * @return the previousFireTime
      */
-    public String getPreviousFireTime() {
+    public Date getPreviousFireTime() {
         return previousFireTime;
     }
     
@@ -122,14 +125,14 @@ public class SchedulerJobBeanImpl implements SchedulerJobBean {
      * @param previousFireTime
      *            the previousFireTime to set
      */
-    public void setPreviousFireTime(String previousFireTime) {
+    public void setPreviousFireTime(Date previousFireTime) {
         this.previousFireTime = previousFireTime;
     }
     
     /**
      * @return the nextFireTime
      */
-    public String getNextFireTime() {
+    public Date getNextFireTime() {
         return nextFireTime;
     }
     
@@ -137,7 +140,7 @@ public class SchedulerJobBeanImpl implements SchedulerJobBean {
      * @param nextFireTime
      *            the nextFireTime to set
      */
-    public void setNextFireTime(String nextFireTime) {
+    public void setNextFireTime(Date nextFireTime) {
         this.nextFireTime = nextFireTime;
     }
     
@@ -157,16 +160,16 @@ public class SchedulerJobBeanImpl implements SchedulerJobBean {
     }
     
     public String getShortName() {
-        if (jobName != null && !jobName.isEmpty()) {
-            return jobName.substring(jobName.lastIndexOf(".")).substring(1);
+        if (jobName != null) {
+            return jobName.substring(jobName.lastIndexOf('.') + 1);
         } else {
             return null;
         }
     }
     
     public String getShortGroup() {
-        if (groupName != null && !groupName.isEmpty()) {
-            return groupName.substring(groupName.lastIndexOf(".")).substring(1);
+        if (groupName != null) {
+            return groupName.substring(groupName.lastIndexOf(".") + 1);
         } else {
             return null;
         }

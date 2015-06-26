@@ -18,6 +18,7 @@
 package com.rivetlogic.quartz.bean;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author steven.barba
@@ -39,21 +40,21 @@ public interface SchedulerJobBean extends Serializable {
     
     public void setTriggerState(String triggerState);
     
-    public String getStartTime();
+    public Date getStartTime();
     
-    public void setStartTime(String startTime);
+    public void setStartTime(Date startTime);
     
-    public String getEndTime();
+    public Date getEndTime();
     
-    public void setEndTime(String endTime);
+    public void setEndTime(Date endTime);
     
-    public String getPreviousFireTime();
+    public Date getPreviousFireTime();
     
-    public void setPreviousFireTime(String previousFireTime);
+    public void setPreviousFireTime(Date previousFireTime);
     
-    public String getNextFireTime();
+    public Date getNextFireTime();
     
-    public void setNextFireTime(String nextFireTime);
+    public void setNextFireTime(Date nextFireTime);
     
     public String getStorageType();
     

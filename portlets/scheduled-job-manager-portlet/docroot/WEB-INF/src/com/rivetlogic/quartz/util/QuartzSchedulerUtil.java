@@ -19,15 +19,20 @@ package com.rivetlogic.quartz.util;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.messaging.DestinationNames;
+import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.messaging.MessageBusUtil;
+import com.liferay.portal.kernel.scheduler.SchedulerEngine;
 import com.liferay.portal.kernel.scheduler.SchedulerEngineHelperUtil;
 import com.liferay.portal.kernel.scheduler.SchedulerException;
 import com.liferay.portal.kernel.scheduler.StorageType;
 import com.liferay.portal.kernel.scheduler.TriggerState;
+import com.liferay.portal.kernel.scheduler.messaging.ReceiverKey;
 import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.util.portlet.PortletProps;
 import com.rivetlogic.quartz.bean.SchedulerJobBean;
 import com.rivetlogic.quartz.bean.impl.SchedulerJobBeanImpl;
 import com.rivetlogic.quartz.sort.EndTimeComparator;
@@ -40,7 +45,6 @@ import com.rivetlogic.quartz.sort.StateComparator;
 import com.rivetlogic.quartz.sort.StorageTypeComparator;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -66,14 +70,10 @@ public class QuartzSchedulerUtil {
         schedulerJobBean.setGroupName(schedulerResponse.getGroupName());
         schedulerJobBean.setTriggerState(triggerState == null ? SchedulerJobBean.NULL_VALUE_DISPLAY : triggerState
                 .toString());
-        schedulerJobBean.setStartTime(startTime == null ? SchedulerJobBean.NULL_VALUE_DISPLAY : FORMAT_DATE_TIME
-                .format(startTime));
-        schedulerJobBean.setEndTime(endTime == null ? SchedulerJobBean.NULL_VALUE_DISPLAY : FORMAT_DATE_TIME
-                .format(endTime));
-        schedulerJobBean.setPreviousFireTime(previousFireTime == null ? SchedulerJobBean.NULL_VALUE_DISPLAY
-                : FORMAT_DATE_TIME.format(previousFireTime));
-        schedulerJobBean.setNextFireTime(nextFireTime == null ? SchedulerJobBean.NULL_VALUE_DISPLAY : FORMAT_DATE_TIME
-                .format(nextFireTime));
+        schedulerJobBean.setStartTime(startTime);
+        schedulerJobBean.setEndTime(endTime);
+        schedulerJobBean.setPreviousFireTime(previousFireTime);
+        schedulerJobBean.setNextFireTime(nextFireTime);
         schedulerJobBean.setStorageType(storageType == null ? SchedulerJobBean.NULL_VALUE_DISPLAY : storageType
                 .toString().trim());
         return schedulerJobBean;
@@ -97,29 +97,32 @@ public class QuartzSchedulerUtil {
     
     public static void scheduleJobAction(PortletRequest request, String action) throws SchedulerException,
         ParseException {
-        String jobName;
-        String groupName;
-        String storageTypeText;
-        StorageType storageType;
-        
         // Checking all the rows to see which are selected
-        for (int i = 0; i <= QuartzSchedulerUtil.NUMBER_OF_ROWS; i++) {
-            
-            boolean rowSelected = ParamUtil.getBoolean(request, PARAMETER_JOB_SELECTED + i, false);
+    	String rowSelection;
+        for (int i = 0; (rowSelection = request.getParameter(PARAMETER_JOB_SELECTED + i)) != null; i++) {
+            boolean rowSelected = GetterUtil.get(rowSelection, false);
             if (rowSelected) {
                 
-                jobName = ParamUtil.getString(request, PARAMETER_JOB_NAME + i);
-                groupName = ParamUtil.getString(request, PARAMETER_JOB_GROUP + i);
-                storageTypeText = ParamUtil.getString(request, PARAMETER_STORAGE_TYPE + i);
-                storageType = StorageType.valueOf(storageTypeText);
+                String jobName = ParamUtil.getString(request, PARAMETER_JOB_NAME + i);
+                String groupName = ParamUtil.getString(request, PARAMETER_JOB_GROUP + i);
+                String storageTypeText = ParamUtil.getString(request, PARAMETER_STORAGE_TYPE + i);
+                StorageType storageType = StorageType.valueOf(storageTypeText);
                 
-                // Log Info messages
-                _log.info(String.format(LOG_JOB_FORMAT, action, LOG_ACTION_MSG, jobName, groupName, storageType));
+                // Log debug messages
+                if (_log.isDebugEnabled()) {
+                	_log.debug(String.format(LOG_JOB_FORMAT, action, LOG_ACTION_MSG, jobName, groupName, storageType));
+                }
                 
                 if (action.equals(ACTION_PAUSE)) {
                     SchedulerEngineHelperUtil.pause(jobName, groupName, storageType);
                 } else if (action.equals(ACTION_RESUME)) {
                     SchedulerEngineHelperUtil.resume(jobName, groupName, storageType);
+                } else if (action.equals(ACTION_RUN)) {
+                    final Message message = new Message();
+                    message.put(SchedulerEngine.MESSAGE_LISTENER_CLASS_NAME, jobName);
+                    message.put(SchedulerEngine.DESTINATION_NAME, DestinationNames.SCHEDULER_DISPATCH);
+                    message.put(SchedulerEngine.RECEIVER_KEY, new ReceiverKey(jobName, groupName));
+                    MessageBusUtil.sendMessage(DestinationNames.SCHEDULER_DISPATCH, message);
                 }
             }
         }      
@@ -172,8 +175,6 @@ public class QuartzSchedulerUtil {
     
     public static final String ATTRIBUTE_JOBS_LIST = "schedulerJobsList";
     public static final String ATTRIBUTE_COUNT = "count";
-    public static final String PROP_DEFAULT_FORMAT_DATE = "default.format.date"; 
-    public static final SimpleDateFormat FORMAT_DATE_TIME = new SimpleDateFormat(PortletProps.get(PROP_DEFAULT_FORMAT_DATE));
     
     private static final Log _log = LogFactoryUtil.getLog(QuartzSchedulerUtil.class);
     private static final String LOG_ACTION_MSG = "action will be processed on job ";
@@ -189,17 +190,19 @@ public class QuartzSchedulerUtil {
     private static final String COLUMN_NEXT_FIRE_TIME = "nextFireTime";
     private static final String COLUMN_STORAGE_TYPE = "storageType";
     
+    public static final String ACTION_RUN = "run";
     public static final String ACTION_PAUSE = "pause";
     public static final String ACTION_RESUME = "resume";
     public static final String ACTION_SHUTDOWN = "shutdown";
     public static final String ACTION_REFRESH = "refresh";
+
     public static final String PARAMETER_JOB_ACTION = "jobAction";
     public static final String PARAMETER_JOB_SELECTED = "jobSelected";
     public static final String PARAMETER_JOB_NAME = "jobName";
     public static final String PARAMETER_JOB_GROUP = "jobGroup";
     public static final String PARAMETER_STORAGE_TYPE = "jobStorageType";
+
     public static final String DEFAULT_ORDER_BY_TYPE = "asc";
     public static final String DEFAULT_ORDER_BY_COL = COLUMN_SHORT_NAME;
-    public static final int NUMBER_OF_ROWS = 10;
     
 }

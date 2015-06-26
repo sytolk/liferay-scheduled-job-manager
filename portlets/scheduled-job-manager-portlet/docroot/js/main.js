@@ -58,7 +58,7 @@ AUI.add('scheduledjobutil', function(A){
 	                        toolbars: {
 	                            footer: [
 	                                {
-	                                    label: Liferay.Language.get('com.rivet.scheduled_job.popup.button.accept'),
+	                                    label: Liferay.Language.get('accept'),
 	                                    on: {
 	                                        click: function() {
 	                                                submitForm(form);
@@ -66,7 +66,7 @@ AUI.add('scheduledjobutil', function(A){
 	                                    }
 	                                },
 	                                {
-	                                    label: Liferay.Language.get('com.rivet.scheduled_job.popup.button.cancel'),
+	                                    label: Liferay.Language.get('cancel'),
 	                                    on: {
 	                                        click: function() {
 	                                                dialog.hide();
@@ -76,7 +76,7 @@ AUI.add('scheduledjobutil', function(A){
 	                            ]
 	                        }
 	    	            },
-	    	            title: Liferay.Language.get('com.rivet.scheduled_job.popup.warning.title')
+	    	            title: Liferay.Language.get('warning')
 	                }
 	        );
     	}
