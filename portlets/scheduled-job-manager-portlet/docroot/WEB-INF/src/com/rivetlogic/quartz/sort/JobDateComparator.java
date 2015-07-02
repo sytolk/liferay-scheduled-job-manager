@@ -25,17 +25,17 @@ import com.rivetlogic.quartz.bean.SchedulerJobBean;
  * 
  * @author Tobias Liefke
  */
-public abstract class DateComparator extends OrderByComparator {
+public abstract class JobDateComparator extends OrderByComparator {
 
 	private static final long serialVersionUID = 1L;
 
 	private final boolean asc;
 
-	public DateComparator() {
+	public JobDateComparator() {
 		this(false);
 	}
 
-	public DateComparator(boolean asc) {
+	public JobDateComparator(boolean asc) {
 		this.asc = asc;
 	}
 
@@ -44,12 +44,12 @@ public abstract class DateComparator extends OrderByComparator {
 		SchedulerJobBean jobBean0 = (SchedulerJobBean) arg0;
 		SchedulerJobBean jobBean1 = (SchedulerJobBean) arg1;
 
-		Date date0 = getDateValue(jobBean0);
+		Date date0 = getDateToCompare(jobBean0);
 		if (date0 == null) {
 			date0 = new Date(0);
 		}
 
-		Date date1 = getDateValue(jobBean1);
+		Date date1 = getDateToCompare(jobBean1);
 		if (date1 == null) {
 			date1 = new Date(0);
 		}
@@ -69,6 +69,6 @@ public abstract class DateComparator extends OrderByComparator {
 	 *            the bean of the current row
 	 * @return the value of the compared column
 	 */
-	protected abstract Date getDateValue(SchedulerJobBean jobBean);
+	protected abstract Date getDateToCompare(SchedulerJobBean jobBean);
 
 }

@@ -118,14 +118,18 @@ public class QuartzSchedulerUtil {
                 } else if (action.equals(ACTION_RESUME)) {
                     SchedulerEngineHelperUtil.resume(jobName, groupName, storageType);
                 } else if (action.equals(ACTION_RUN)) {
-                    final Message message = new Message();
-                    message.put(SchedulerEngine.MESSAGE_LISTENER_CLASS_NAME, jobName);
-                    message.put(SchedulerEngine.DESTINATION_NAME, DestinationNames.SCHEDULER_DISPATCH);
-                    message.put(SchedulerEngine.RECEIVER_KEY, new ReceiverKey(jobName, groupName));
-                    MessageBusUtil.sendMessage(DestinationNames.SCHEDULER_DISPATCH, message);
+                    runScheduledJob(jobName, groupName);
                 }
             }
         }      
+    }
+    
+    private static void runScheduledJob(String jobName, String groupName) {
+    	Message message = new Message();
+        message.put(SchedulerEngine.MESSAGE_LISTENER_CLASS_NAME, jobName);
+        message.put(SchedulerEngine.DESTINATION_NAME, DestinationNames.SCHEDULER_DISPATCH);
+        message.put(SchedulerEngine.RECEIVER_KEY, new ReceiverKey(jobName, groupName));
+        MessageBusUtil.sendMessage(DestinationNames.SCHEDULER_DISPATCH, message);
     }
     
     public static void getSchedulerJobs(PortletRequest request) throws SchedulerException {
