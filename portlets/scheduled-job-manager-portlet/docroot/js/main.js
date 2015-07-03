@@ -21,10 +21,12 @@ AUI().ready('aui-node', function(A) {
     
     //Add the CSS rules ".hidden-phone" and ".hidden-tablet" and some cols of the search-container for give responsive behavior to the table
     var hideTableCols = (function hideColsForDevices(){
-    	thList.item(2).addClass('hidden-phone hidden-tablet');// Group Name col.
-        thList.item(5).addClass('hidden-phone hidden-tablet');// End Time col.
-        thList.item(6).addClass('hidden-phone hidden-tablet');// Previous FireTime col.
-        thList.item(8).addClass('hidden-phone hidden-tablet');// Storage Type col.
+    	if(thList.size() > 0) {
+	    	thList.item(2).addClass('hidden-phone hidden-tablet');// Group Name col.
+	        thList.item(5).addClass('hidden-phone hidden-tablet');// End Time col.
+	        thList.item(6).addClass('hidden-phone hidden-tablet');// Previous FireTime col.
+	        thList.item(8).addClass('hidden-phone hidden-tablet');// Storage Type col.
+    	}
     })();  
 
 });
@@ -34,7 +36,11 @@ AUI.add('scheduledjobutil', function(A){
     
 	var portletNamespace = "";
 	var shutdownAction = "shutdown";
+	var runAction = "run";
+	var resumeAction = "resume";
+	var pauseAction = "pause";
 	var dialog = undefined;
+	var validation = undefined;
 	var form = A.one('form');
 	
     A.namespace('scheduledjobutil');
@@ -42,10 +48,51 @@ AUI.add('scheduledjobutil', function(A){
     A.scheduledjobutil.setPortletNamespace = function(pns){		 
 		portletNamespace = pns;
 	};
+	
 	A.scheduledjobutil.setShutdownActionName = function(action){		 
 		shutdownAction = action;
 	};
+	
+	A.scheduledjobutil.setRunActionName = function(action){		 
+		runAction = action;
+	};
+	
+	A.scheduledjobutil.setResumeActionName = function(action){		 
+		resumeAction = action;
+	};
+	
+	A.scheduledjobutil.setPauseActionName = function(action){		 
+		pauseAction = action;
+	};
     
+	A.scheduledjobutil.showValidation = function(event) {
+    	if (validation == undefined) {
+	        validation = Liferay.Util.Window.getWindow(
+	                {
+	    	            dialog: {
+	                        bodyContent: Liferay.Language.get('com.rivet.scheduled_job.popup.validation.msg.body'),
+	                        width: 400,
+	                        height: 250,
+	                        toolbars: {
+	                            footer: [
+	                                {
+	                                    label: Liferay.Language.get('accept'),
+	                                    on: {
+	                                        click: function() {
+	                                                validation.hide();
+	                                        }
+	                                    }
+	                                }
+	                            ]
+	                        }
+	    	            },
+	    	            title: Liferay.Language.get('com.rivet.scheduled_job.popup.validation.msg.title')
+	                }
+	        );
+    	}
+    	validation.show();
+    };
+	
     A.scheduledjobutil.showDialog = function(event) {
     	//Popup defination
     	if (dialog == undefined) {
@@ -93,9 +140,14 @@ AUI.add('scheduledjobutil', function(A){
     	
     	if (action === shutdownAction){
     		A.scheduledjobutil.showDialog();
-    	}
-    	else{
-
+    	} else if(action == runAction || action == resumeAction || action == pauseAction) {
+    		inputs = A.all('input[type=checkbox]:checked');
+    		if(inputs.size() < 1) {
+    			A.scheduledjobutil.showValidation();
+    			return;
+    		}
+    		form.submit();
+    	} else {
     		form.submit();
     	}
     };
