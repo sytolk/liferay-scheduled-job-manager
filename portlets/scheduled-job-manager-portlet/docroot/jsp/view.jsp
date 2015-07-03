@@ -130,5 +130,8 @@
 <aui:script use ="scheduledjobutil">
 A.scheduledjobutil.setPortletNamespace('${pns}');
 A.scheduledjobutil.setShutdownActionName('<%= QuartzSchedulerUtil.ACTION_SHUTDOWN %>');
+A.scheduledjobutil.setRunActionName('<%= QuartzSchedulerUtil.ACTION_RUN %>');
+A.scheduledjobutil.setResumeActionName('<%= QuartzSchedulerUtil.ACTION_RESUME %>');
+A.scheduledjobutil.setPauseActionName('<%= QuartzSchedulerUtil.ACTION_PAUSE %>');
 A.all('#schedulerJobsContainer :button').on('click',A.scheduledjobutil.actionButtonHandler);
 </aui:script>
