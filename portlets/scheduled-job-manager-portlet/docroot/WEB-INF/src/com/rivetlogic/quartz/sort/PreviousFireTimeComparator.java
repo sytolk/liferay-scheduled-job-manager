@@ -25,7 +25,7 @@ import com.rivetlogic.quartz.bean.SchedulerJobBean;
  * @author steven.barba
  * @author Tobias Liefke
  */
-public class PreviousFireTimeComparator extends DateComparator {
+public class PreviousFireTimeComparator extends JobDateComparator {
 
 	private static final long serialVersionUID = 1L;
 
@@ -38,7 +38,7 @@ public class PreviousFireTimeComparator extends DateComparator {
 	}
 
 	@Override
-	protected Date getDateValue(SchedulerJobBean jobBean) {
+	protected Date getDateToCompare(SchedulerJobBean jobBean) {
 		return jobBean.getPreviousFireTime();
 	}
 

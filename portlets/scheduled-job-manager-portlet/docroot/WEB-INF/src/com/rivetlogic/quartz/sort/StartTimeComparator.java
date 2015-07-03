@@ -25,7 +25,7 @@ import com.rivetlogic.quartz.bean.SchedulerJobBean;
  * @author steven.barba
  * @author Tobias Liefke
  */
-public class StartTimeComparator extends DateComparator {
+public class StartTimeComparator extends JobDateComparator {
 
 	private static final long serialVersionUID = 1L;
 
@@ -38,7 +38,7 @@ public class StartTimeComparator extends DateComparator {
 	}
 
 	@Override
-	protected Date getDateValue(SchedulerJobBean jobBean) {
+	protected Date getDateToCompare(SchedulerJobBean jobBean) {
 		return jobBean.getStartTime();
 	}
 

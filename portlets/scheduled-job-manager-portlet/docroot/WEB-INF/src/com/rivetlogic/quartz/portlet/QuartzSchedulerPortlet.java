@@ -77,7 +77,6 @@ public class QuartzSchedulerPortlet extends MVCPortlet {
             } else if (jobAction.equals(QuartzSchedulerUtil.ACTION_SHUTDOWN)) {
                 try {
                     QuartzSchedulerUtil.scheduleJobServiceAction(jobAction);
-                    SessionMessages.add(actionRequest, SESSION_MESSAGE_SUCCESS);
                 } catch (SchedulerException e) {
                     _log.error(e);
                     SessionErrors.add(actionRequest, SESSION_MESSAGE_ERROR);
@@ -85,7 +84,6 @@ public class QuartzSchedulerPortlet extends MVCPortlet {
             } else {
                 try {
                     QuartzSchedulerUtil.scheduleJobAction(actionRequest, jobAction);
-                    SessionMessages.add(actionRequest, SESSION_MESSAGE_SUCCESS);
                 } catch (Exception e) {
                     _log.error(e);
                     SessionErrors.add(actionRequest, SESSION_MESSAGE_ERROR);
@@ -96,6 +94,5 @@ public class QuartzSchedulerPortlet extends MVCPortlet {
     
     private static final int NOT_RESULTS = 0;
     private static final Log _log = LogFactoryUtil.getLog(QuartzSchedulerPortlet.class);
-    private static final String SESSION_MESSAGE_SUCCESS = "your-request-completed-successfully";
     private static final String SESSION_MESSAGE_ERROR = "your-request-failed-to-complete";
 }

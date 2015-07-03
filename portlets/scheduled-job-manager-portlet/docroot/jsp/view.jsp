@@ -21,9 +21,6 @@
 
 <%@include file="init.jsp" %>
 
-<liferay-ui:success key="rivet_scheduled_success" message="rivet.scheduled.success"/>
-<liferay-ui:error key="rivet_scheduled_error" message="rivet.scheduled.error" />
-
 <%
     List<SchedulerJobBean> schedulerJobBeans = (List<SchedulerJobBean>) request.getAttribute("schedulerJobsList");
 	
@@ -62,14 +59,14 @@
 			<fieldset>
 				<legend><liferay-ui:message key="scheduled.job.manager.title" /></legend>
 				<div class="btn-toolbar form-actions">
-					<div class="btn-group scheduler-job-actions pull-left">
+					<div class="btn-group pull-left">
 						<button id="<%= QuartzSchedulerUtil.ACTION_RUN %>" class="btn btn-large btn-success" type="button" value="Run"><span class="icon-play"></span> <liferay-ui:message key="execute" /></button>
                         &nbsp;
 						<button id="<%= QuartzSchedulerUtil.ACTION_RESUME %>" class="btn btn-large btn-primary" type="button" value="Resume"><span class="icon-eject"></span> <liferay-ui:message key="resume" /></button>
                         &nbsp;
 						<button id="<%= QuartzSchedulerUtil.ACTION_PAUSE %>" class="btn btn-large btn-warning" type="button" value="Pause"><span class="icon-pause"></span> <liferay-ui:message key="pause" /></button>
 					</div>
-					<div class="btn-group refresh pull-right">
+					<div class="btn-group pull-right">
 						<button id="<%= QuartzSchedulerUtil.ACTION_SHUTDOWN %>" class="btn btn-large btn-danger" type="button" value="Shutdown"><span class="icon-off"></span> <liferay-ui:message key="shutdown" /></button>
                         &nbsp;
 						<button id="<%= QuartzSchedulerUtil.ACTION_REFRESH %>" class="btn btn-large btn-success" type="button" value="Refresh"><span class="icon-refresh"></span> <liferay-ui:message key="refresh" /></button>
