@@ -177,6 +177,18 @@ public class QuartzSchedulerUtil {
         return orderByComparator;
     }
     
+    private static boolean checkRunSupported() {
+        try {
+            QuartzSchedulerUtil.class.getClassLoader().loadClass("com.liferay.portal.kernel.scheduler.messaging.ReceiverKey");
+            return true;
+        } catch(ClassNotFoundException e) {
+            if(_log.isDebugEnabled()) {
+                _log.debug("Scheduled Job execution not supported.");
+            }
+            return false;
+        }
+    }
+    
     public static final String ATTRIBUTE_JOBS_LIST = "schedulerJobsList";
     public static final String ATTRIBUTE_COUNT = "count";
     
@@ -193,6 +205,8 @@ public class QuartzSchedulerUtil {
     private static final String COLUMN_PREVIOUS_FIRE_TIME = "previousFireTime";
     private static final String COLUMN_NEXT_FIRE_TIME = "nextFireTime";
     private static final String COLUMN_STORAGE_TYPE = "storageType";
+    
+    public static final boolean RUN_SUPPORTED = checkRunSupported();
     
     public static final String ACTION_RUN = "run";
     public static final String ACTION_PAUSE = "pause";
