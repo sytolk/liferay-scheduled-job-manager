@@ -47,6 +47,7 @@
 <c:set var="jobnameparam" value ="<%=QuartzSchedulerUtil.PARAMETER_JOB_NAME %>"/>
 <c:set var="jobgroupparam" value ="<%=QuartzSchedulerUtil.PARAMETER_JOB_GROUP %>"/>
 <c:set var="jobstoragetypeparam" value ="<%=QuartzSchedulerUtil.PARAMETER_STORAGE_TYPE %>"/>
+<c:set var="runSupported" value="<%=QuartzSchedulerUtil.RUN_SUPPORTED %>"/>
 
 <div id="schedulerManager">
 	<div id="schedulerJobsContainer">
@@ -60,8 +61,10 @@
 				<legend><liferay-ui:message key="scheduled.job.manager.title" /></legend>
 				<div class="btn-toolbar form-actions">
 					<div class="btn-group pull-left">
+						<c:if test="${runSupported}">
 						<button id="<%= QuartzSchedulerUtil.ACTION_RUN %>" class="btn btn-large btn-success" type="button" value="Run"><span class="icon-play"></span> <liferay-ui:message key="execute" /></button>
                         &nbsp;
+                        </c:if>
 						<button id="<%= QuartzSchedulerUtil.ACTION_RESUME %>" class="btn btn-large btn-primary" type="button" value="Resume"><span class="icon-eject"></span> <liferay-ui:message key="resume" /></button>
                         &nbsp;
 						<button id="<%= QuartzSchedulerUtil.ACTION_PAUSE %>" class="btn btn-large btn-warning" type="button" value="Pause"><span class="icon-pause"></span> <liferay-ui:message key="pause" /></button>
