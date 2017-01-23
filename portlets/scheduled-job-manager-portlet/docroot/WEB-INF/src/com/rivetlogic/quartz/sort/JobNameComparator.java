@@ -39,11 +39,23 @@ public class JobNameComparator extends OrderByComparator {
     }
     
     @Override
-    public int compare(Object arg0, Object arg1) {
-        SchedulerJobBean jobBean0 = (SchedulerJobBean) arg0;
-        SchedulerJobBean jobBean1 = (SchedulerJobBean) arg1;
+    public int compare(Object obj1, Object obj2) {
+    
+        SchedulerJobBean jobBean1 = (SchedulerJobBean) obj1;
+        SchedulerJobBean jobBean2 = (SchedulerJobBean) obj2;
         
-        int value = jobBean0.getShortName().toLowerCase().compareTo(jobBean1.getShortName().toLowerCase());
+        String shortName1 = "";
+        String shortName2 = "";
+        
+        if (jobBean1.getShortName() != null) {
+           shortName1 = jobBean1.getShortName();
+        }
+
+        if (jobBean2.getShortName() != null) {
+           shortName2 = jobBean2.getShortName();
+        }
+        
+        int value = shortName1.toLowerCase().compareTo(shortName2.toLowerCase());        
         
         if (asc) {
             return value;
