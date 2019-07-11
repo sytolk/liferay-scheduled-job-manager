@@ -1,2 +1,14 @@
+Bundle-Name: liferay-scheduled-job-manager
+Bundle-Description: Liferay Scheduled Job Manager
 Bundle-SymbolicName: liferay.scheduled.job.manager
-Bundle-Version: 1.0.0
+Bundle-Version: 1.4.0
+
+-check: all
+-contract: JavaPortlet
+-jsp: *.jsp,*.jspf
+-plugin.bundle: com.liferay.ant.bnd.resource.bundle.ResourceBundleLoaderAnalyzerPlugin
+-plugin.jsp: com.liferay.ant.bnd.jsp.JspAnalyzerPlugin
+-plugin.sass: com.liferay.ant.bnd.sass.SassAnalyzerPlugin
+-sass: *
+-sources: true
+
