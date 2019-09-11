@@ -38,13 +38,13 @@ import org.osgi.service.component.annotations.Component;
 		"javax.portlet.init-param.help-template=/help.jsp",
 		"javax.portlet.name=" + ScheduledJobManagerPortletKeys.LiferayScheduledJobManagerpanelapp,
 		"javax.portlet.resource-bundle=content.Language",
-		"javax.portlet.security-role-ref=administrator",
+		"javax.portlet.security-role-ref=power-user,user",
 		"javax.portlet.supports.mime-type=text/html"
 	},
 	service = Portlet.class
 )
 public class ScheduledJobManagerPortlet extends MVCPortlet {
-	
+
 	/**
      * Rendering View Liferay Mode with the scheduler job list in the Liferay
      * system
@@ -59,7 +59,7 @@ public class ScheduledJobManagerPortlet extends MVCPortlet {
         }
         super.render(request, response);
     }
-    
+
     private static final int NOT_RESULTS = 0;
     private static final Log _log = LogFactoryUtil.getLog(ScheduledJobManagerPortlet.class);
 }

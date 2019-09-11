@@ -1,1 +1,17 @@
+buildscript {
+    dependencies {
+        classpath group: "com.liferay", name: "com.liferay.gradle.plugins.workspace", version: "1.10.20"
+        classpath group: "net.saliman", name: "gradle-properties-plugin", version: "1.4.6"
+    }
+
+    repositories {
+        maven {
+            url "http://repository-cdn.liferay.com/nexus/content/groups/public"
+        }
+    }
+}
+
+apply plugin: "net.saliman.properties"
+apply plugin: "com.liferay.workspace"
+
 rootProject.name = 'liferay-scheduled-job-manager'
